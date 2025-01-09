@@ -12,4 +12,4 @@ set(LIBRARY_DEPLOY_DIR ${BASE_DEPLOY_DIR}/lib)
 
 add_subdirectory(common)
 add_subdirectory(prog1)
-add_subdirectory(prog2)
+#add_subdirectory(prog2)

@@ -1,10 +1,12 @@
 #include <shmemworker.h>
+#include <semworker.h>
 
 #include <iostream>
 
 int main()
 {
-    ShMemWorker memWorker;
+    ShMemWorker memWorker("shMemTest");
+    SemWorker semWorker("semTest", 0);
 
     std::cout << "Press \'q\' or \'Q\' to exit!\n" << std::endl;
 
@@ -23,6 +25,9 @@ int main()
         }
 
         std::cout << "Number of written bytes: " << memWorker.write(str) << std::endl;
+
+        if (semWorker.getValue() == 0)
+            semWorker.post();
     }
 
     return 0;

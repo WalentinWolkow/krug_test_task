@@ -3,13 +3,12 @@
 
 #include <string>
 
-#define SH_MEM_KEY      128
 #define SH_MEM_BUF_SIZE 4096
 
 class ShMemWorker
 {
 public:
-    ShMemWorker();
+    ShMemWorker(const std::string &);
     ~ShMemWorker();
 
     // Read data from shared memory
@@ -23,12 +22,12 @@ public:
     size_t write(const std::string &);
 
 private:
-    // Shared memory ID
-    int shMemId;
+    // shared memory name for shm_unlink()
+    const std::string shMemName;
+    // shared memory file descriptor
+    int shMemFd;
     // Pointer to shared memory buffer
     char *shMemBuf;
-    // Real size of shared memory buffer
-    size_t shMemSegSize;
 };
 
 #endif  // SHMEMWORKER_H
