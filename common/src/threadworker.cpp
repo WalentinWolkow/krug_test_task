@@ -1,11 +1,14 @@
 #include "threadworker.h"
+#include <shmemworker.h>
+#include <semworker.h>
 
 #include <unistd.h>
 #include <poll.h>
 
-ThreadWorker::ThreadWorker(void (*threadFunc)()) :
+ThreadWorker::ThreadWorker(ThreadWorker::pFunc init, ThreadWorker::pFunc loop) :
     threadId(0),
-    mThreadFunc(threadFunc)
+    mThreadLoopFunc(loop),
+    workers(new StWorkers)
 {
     if (pipe(pipeFd) == -1)
     {
@@ -13,6 +16,8 @@ ThreadWorker::ThreadWorker(void (*threadFunc)()) :
 
         return;
     }
+
+    init((void *)workers);
 
     if (pthread_create(&threadId, NULL, threadFuncExec, (void *)this) != 0)
     {
@@ -38,6 +43,18 @@ ThreadWorker::~ThreadWorker()
 
     if (pipeFd[0] != -1)
         close(pipeFd[0]);
+
+
+    if (workers->shMem != NULL)
+        delete workers->shMem;
+
+    if (workers->sem1 != NULL)
+        delete workers->sem1;
+
+    if (workers->sem2 != NULL)
+        delete workers->sem2;
+
+    delete workers;
 }
 
 
@@ -51,7 +68,7 @@ void * ThreadWorker::threadFuncExec(void *data)
 
     for ( ; ; )
     {
-        instance->mThreadFunc();
+        instance->mThreadLoopFunc((void *)instance->workers);
 
         int pollRes = poll(&pollFd, 1, 1000);
         if (pollRes == 0)

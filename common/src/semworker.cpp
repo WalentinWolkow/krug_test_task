@@ -15,8 +15,6 @@ SemWorker::SemWorker(const std::string &name, int value) :
         std::cerr << __PRETTY_FUNCTION__ << ", sem_open() error: " << strerror(errno) << '\n';
     else
         std::cout << __PRETTY_FUNCTION__ << ". Success: semaphore created!" << std::endl;
-
-    std::cout << "SEM_FAILED = " << SEM_FAILED << std::endl;
 }
 
 SemWorker::~SemWorker()
@@ -59,11 +57,21 @@ int SemWorker::post()
     if (sem == SEM_FAILED)
         return -1;
 
-    int res = sem_post(sem);
-    if (res == 0)
-        std::cout << __PRETTY_FUNCTION__ << ". sem_post() function successful!" << std::endl;
-    else
-        std::cerr << __PRETTY_FUNCTION__ << ", sem_post() error: " << strerror(errno) << '\n';
+    return sem_post(sem);
+}
 
-    return res;
+int SemWorker::tryWait()
+{
+    if (sem == SEM_FAILED)
+        return -1;
+
+    return sem_trywait(sem);
+}
+
+int SemWorker::wait()
+{
+    if (sem == SEM_FAILED)
+        return -1;
+
+    return sem_wait(sem);
 }

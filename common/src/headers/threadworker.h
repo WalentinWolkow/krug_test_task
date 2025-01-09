@@ -3,17 +3,30 @@
 
 #include <pthread.h>
 
+class ShMemWorker;
+class SemWorker;
+
 class ThreadWorker
 {
 public:
-    // param - pointer to thread function
-    ThreadWorker(void (*)());
+    typedef void (*pFunc)(void *);
+
+    typedef struct StWorkers {
+        ShMemWorker *shMem;
+        SemWorker *sem1;
+        SemWorker *sem2;
+
+        StWorkers() : shMem(0), sem1(0), sem2(0) {};
+    } *pWorkers;
+
+    ThreadWorker(pFunc, pFunc);
     ~ThreadWorker();
 
 private:
     int pipeFd[2];
     pthread_t threadId;
-    void (*mThreadFunc)(void);
+    pFunc mThreadLoopFunc;
+    pWorkers workers;
 
     // Runner for thread function
     static void * threadFuncExec(void *);

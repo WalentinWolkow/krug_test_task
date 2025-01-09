@@ -13,6 +13,8 @@ public:
 
     int getValue();
     int post();
+    int tryWait();
+    int wait();
 
 private:
     // shared memory name for sem_unlink()

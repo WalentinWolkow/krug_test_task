@@ -3,6 +3,8 @@
 
 #include <string>
 
+#define SH_MEM_NAME     "ShMemTest"
+#define SH_MEM_SEM_NAME "ShMemSem"
 #define SH_MEM_BUF_SIZE 4096
 
 class ShMemWorker

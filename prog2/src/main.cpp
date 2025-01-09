@@ -1,36 +1,18 @@
-//#include <threadworker.h>
-#include <shmemworker.h>
+#include <threadworker.h>
+#include "threadfuncs.h"
 
-#include <fstream>
 #include <iostream>
-
-//void threadOneFunc();
-//void threadTwoFunc();
 
 int main()
 {
-//    ThreadWorker tw1(threadOneFunc);
-//    ThreadWorker tw2(threadTwoFunc);
+    ThreadWorker *tw1 = new ThreadWorker(threadOneInitFunc, threadOneLoopFunc),
+                 *tw2 = new ThreadWorker(threadTwoInitFunc, threadTwoLoopFunc);
 
-    ShMemWorker shMemWorker;
+    std::cout << "\033[031mPress \'Enter\' to exit!\033[000m" << std::endl;
+    std::cin.get();
 
-    std::string str;
-    shMemWorker.read(str);
-
-    std::ofstream ofs("out.txt", std::ios_base::app);
-    ofs << str << '\n';
-    ofs.close();
+    delete tw1;
+    delete tw2;
 
     return 0;
 }
-
-
-/*void threadOneFunc()
-{
-    std::cerr << '.';
-}
-
-void threadTwoFunc()
-{
-    std::cerr << ';';
-}*/

@@ -5,10 +5,10 @@
 
 int main()
 {
-    ShMemWorker memWorker("shMemTest");
-    SemWorker semWorker("semTest", 0);
+    ShMemWorker memWorker(SH_MEM_NAME);
+    SemWorker semWorker(SH_MEM_SEM_NAME, 0);
 
-    std::cout << "Press \'q\' or \'Q\' to exit!\n" << std::endl;
+    std::cout << "\033[031mEnter \'q\' or \'Q\' to exit!\033[000m\n" << std::endl;
 
     for ( ; ; )
     {
@@ -24,7 +24,7 @@ int main()
                 break;
         }
 
-        std::cout << "Number of written bytes: " << memWorker.write(str) << std::endl;
+        std::cout << "Number of written bytes: " << memWorker.write(str) << '\n' << std::endl;
 
         if (semWorker.getValue() == 0)
             semWorker.post();
