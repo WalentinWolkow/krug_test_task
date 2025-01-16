@@ -1,18 +1,18 @@
-#include <threadworker.h>
-#include "threadfuncs.h"
+//#include <threadworker.h>
+#include "threads.h"
 
 #include <iostream>
 
 int main()
 {
-    ThreadWorker *tw1 = new ThreadWorker(threadOneInitFunc, threadOneLoopFunc),
-                 *tw2 = new ThreadWorker(threadTwoInitFunc, threadTwoLoopFunc);
+    ThreadOne *one = new ThreadOne();
+    ThreadTwo *two = new ThreadTwo();
 
     std::cout << "\033[031mPress \'Enter\' to exit!\033[000m" << std::endl;
     std::cin.get();
 
-    delete tw1;
-    delete tw2;
+    delete one;
+    delete two;
 
     return 0;
 }
