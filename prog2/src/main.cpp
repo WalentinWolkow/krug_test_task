@@ -1,4 +1,3 @@
-//#include <threadworker.h>
 #include "threads.h"
 
 #include <iostream>

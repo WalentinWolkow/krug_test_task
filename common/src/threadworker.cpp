@@ -4,7 +4,8 @@
 #include <poll.h>
 
 ThreadWorker::ThreadWorker() :
-    threadId(0)
+    threadId(0),
+    pipeFd{-1, -1}
 {
     if (pipe(pipeFd) == -1)
     {
